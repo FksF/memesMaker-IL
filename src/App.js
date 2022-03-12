@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import { useCallback, useRef, useState } from 'react';
 import './App.css';
+import LoaderComponent from './components/LoaderComponent/LoaderComponent';
+import useTemplatesHandle from './hooks/useTemplatesHandle';
 
 function App() {
+  const [ page, setPage ] = useState(1);
+  const { templates, loader, error, empty } = useTemplatesHandle(page);
+
+  const observer = useRef();
+  const lastNewRef = useCallback( node => {
+    if (loader) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      console.log(entries[0].isIntersecting, empty);
+      if (entries[0].isIntersecting && empty) {
+        setPage( prevPage => prevPage + 1);
+      }
+    });
+    if(node) observer.current.observe(node);
+  }, [ loader, empty ]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <section className='templates-content'>
+        {templates.map((aTemplate, index) => {
+          if (templates.length === index +1) {
+            return <div className='box-template' ref={lastNewRef} key={aTemplate.id}>{aTemplate.name}</div>
+          } else {
+            return <div className='box-template' key={aTemplate.id}>{aTemplate.name}</div>
+          }
+        })}
+      </section>
+      <LoaderComponent loader={loader} />
+      <div>{ error && 'Error' }</div>
+    </>
   );
 }
 
