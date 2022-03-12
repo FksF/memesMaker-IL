@@ -61,7 +61,7 @@ const GenerateMemePage = () => {
           <input style={{borderRadius: '6px'}} key={index} onChange={(e) => updateInputs(e, index)} placeholder={`Ingresa texto ${index + 1}`}/> 
         ))
       }
-      <a href={imgToShow} rel='custom rel' style={{display: 'block', textAlign: 'center', color: 'white'}} target='_blank'> Click me to download the current image </a>
+      <a href={imgToShow} rel='noopener noreferrer' style={{display: 'block', textAlign: 'center', color: 'white'}} target='_blank'> Click me to download the current image </a>
       <img className='img-gen' src={imgToShow} alt={meme.name} />
       <LoaderComponent loader={loader} />
       <div>{ error && 'Error' }</div>
