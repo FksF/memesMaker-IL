@@ -1,0 +1,14 @@
+.templates-content {
+  align-content: center;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  padding: 0 5%;
+}
+
+@media (max-width: 900px) {
+  .templates-content {
+    grid-template-columns: 1fr;
+  }
+}
